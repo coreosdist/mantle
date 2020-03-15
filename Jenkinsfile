@@ -13,7 +13,7 @@ properties([
 //    ]),
 //
 //    pipelineTriggers([pollSCM('H/15 * * * *')])
-//])
+])
 
 node() {
     stage('SCM') {
