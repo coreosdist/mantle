@@ -6,22 +6,22 @@ properties([
     [$class: 'CopyArtifactPermissionProperty',
      projectNames: '*'],
 
-    parameters([
-        choice(name: 'GOARCH',
-               choices: "amd64\narm64\ns390x",
-               description: 'target architecture for building binaries')
-    ]),
+//    parameters([
+//        choice(name: 'GOARCH',
+//               choices: "amd64\narm64\ns390x",
+//               description: 'target architecture for building binaries')
+//    ]),
+//
+//    pipelineTriggers([pollSCM('H/15 * * * *')])
+//])
 
-    pipelineTriggers([pollSCM('H/15 * * * *')])
-])
-
-node('amd64 && docker') {
+node() {
     stage('SCM') {
         checkout scm
     }
 
     stage('Build') {
-        sh "docker run --rm -e CGO_ENABLED=1 -e GOARCH=${params.GOARCH} -e GOCACHE=/usr/src/myapp/cache -u \"\$(id -u):\$(id -g)\" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v \"\$PWD\":/usr/src/myapp -w /usr/src/myapp golang:1.12 ./build"
+        sh "docker run --rm -e CGO_ENABLED=1 -e GOARCH=amd64 -e GOCACHE=/usr/src/myapp/cache -u \"\$(id -u):\$(id -g)\" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v \"\$PWD\":/usr/src/myapp -w /usr/src/myapp golang:1.12 ./build"
     }
 
     stage('Test') {
